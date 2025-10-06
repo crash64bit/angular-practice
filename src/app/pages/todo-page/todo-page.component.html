@@ -1,0 +1,12 @@
+<todo-items></todo-items>
+
+<p-inputgroup>
+    <input
+        pInputText="pInputText"
+        name="todo-input"
+        type="text"
+        (input)="todoService.onInputChange($event)"
+        [value]="todoService.inputValue"
+        placeholder="Add todo item">
+    <p-button label="Add Item" (click)="todoService.addTodoItem()"/>
+</p-inputgroup>

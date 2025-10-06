@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "primeicons/primeicons.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.p-menubar .p-menubar-item .p-menubar-item-link {
+    border-radius: inherit;
+    transition: background var(--p-menubar-transition-duration), color var(--p-menubar-transition-duration);
+}
+.p-menubar .p-menubar-item:not(:hover) .p-menubar-item-link-active {
+background-color: var(--p-surface-200);
+    color: var(--p-menubar-item-active-color);
+    .p-menubar-item-icon {
+        color: var(--p-menubar-item-active-color);
+    }
+}
+
+
