@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { BrowserStorageService } from '../services/storage.servive';
+import { BrowserStorageService } from '../../services/storage.servive';
 import { CheckboxChangeEvent, Checkbox } from 'primeng/checkbox';
-import { Todo } from '../interfaces/todo';
+import { Todo } from '../../interfaces/todo';
 import { Button } from "primeng/button";
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TodoItemsComponent } from '../../todo-items/todo-items.component';
+import { TodoItemsComponent } from '../../components/todo-items/todo-items.component';
 
 
 @Component({
