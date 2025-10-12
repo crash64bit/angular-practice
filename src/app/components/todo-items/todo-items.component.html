@@ -1,20 +1,21 @@
-<ul class="flex flex-col gap-1">
+<mat-nav-list>
     @for (item of items; track $index) {
-        <li>
-            <p-checkbox [binary]="true" [ngModel]="item.checked" (onChange)="updateTodoItemChecked($index, $event)" />
+        <mat-list-item>
+            <mat-checkbox [checked]="item.checked" (change)="updateTodoItemChecked($index, $event.checked)"></mat-checkbox>
             {{item.value}}
-            <p-button aria-label="Remove" icon="pi pi-trash" size="small" (click)="removeTodoItem($index)" />
-        </li>
+            <button matIconButton matListItemMeta aria-label="Remove" (click)="removeTodoItem($index)">
+                <mat-icon>remove</mat-icon>
+            </button>
+        </mat-list-item>
+        @if (!$last) {
+            <mat-divider></mat-divider>
+        }
     }
-</ul>
+</mat-nav-list>
 
-<p-inputgroup>
-    <input
-        pInputText="pInputText"
-        name="todo-input"
-        type="text"
-        (input)="onInputChange($event)"
-        [value]="inputValue"
-        placeholder="Add todo item">
-    <p-button label="Add Item" (click)="addTodoItem()"/>
-</p-inputgroup>
+<div class="form-control">
+    <mat-form-field>
+        <input matInput placeholder="Add todo item" (input)="onInputChange($event)" [value]="inputValue">
+    </mat-form-field>
+    <button matButton="filled" (click)="addTodoItem()">Add Item</button>
+</div>

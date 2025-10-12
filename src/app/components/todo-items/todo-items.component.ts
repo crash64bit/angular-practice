@@ -1,20 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { BrowserStorageService } from '../../services/storage.servive';
-import { CheckboxChangeEvent, Checkbox } from 'primeng/checkbox';
 import { Todo } from '../../interfaces/todo';
-import { Button } from "primeng/button";
-import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-
-import { InputTextModule } from 'primeng/inputtext';
-import { InputGroupModule } from 'primeng/inputgroup';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatListModule} from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatDividerModule} from '@angular/material/divider'
+import { MatIcon } from '@angular/material/icon';
 
 
 @Component({
   selector: 'todo-items',
-  imports: [Checkbox, Button, CheckboxModule, FormsModule, ButtonModule, InputTextModule, InputGroupModule],
+  imports: [
+    FormsModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatButtonModule,
+    MatInputModule,
+    MatDividerModule,
+    MatIcon
+],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss'
 })
@@ -38,9 +44,7 @@ export class TodoItemsComponent {
     return JSON.parse(rawItems);
   }
 
-  updateTodoItemChecked(index: number, event: CheckboxChangeEvent): void {
-
-    const checked = event.checked;
+  updateTodoItemChecked(index: number, checked: boolean): void {
 
     const items = this.getTodoItems();
 
@@ -83,13 +87,10 @@ export class TodoItemsComponent {
     this.inputValue = '';
   }
 
-  updateTodoItems(items: object): void {
+  updateTodoItems(items: Todo[]): void {
     this.storageService.set('todo', JSON.stringify(items));
+    this.items = items;
   }
 
   items: Todo[] = this.getTodoItems();
-  
-  ngOnInit() {
-    // items: Todo[] = this.getTodoItems(); ?
-  }
 }

@@ -1,0 +1,16 @@
+.mat-mdc-list-base {
+    display: flex;
+    flex-wrap: wrap;
+}
+.mat-mdc-list-item {
+    width: auto;
+
+    &.active {
+        background-color: lightblue;
+    }
+}
+
+mat-list-item {
+    --mat-list-list-item-hover-state-layer-color: transparent;
+    cursor: default;
+}

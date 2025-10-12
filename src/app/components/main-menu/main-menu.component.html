@@ -1,1 +1,15 @@
-<p-menubar [model]="items" />
+<mat-nav-list>
+  @for (item of items; track item) {
+    @if (item.routerLink) {
+        <a mat-list-item [routerLink]=item.routerLink routerLinkActive="active" [routerLinkActiveOptions]=item.routerLinkActiveOptions>
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            {{ item.label }}
+        </a>
+    } @else {
+        <mat-list-item>
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            {{ item.label }}
+        </mat-list-item>
+    }
+  }
+</mat-nav-list>

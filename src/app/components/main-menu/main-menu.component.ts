@@ -1,35 +1,39 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { MenubarModule } from 'primeng/menubar';
+import { MatListModule } from '@angular/material/list';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'main-menu',
   imports: [
-    MenubarModule,
-  ],
+    RouterLink,
+    RouterLinkActive,
+    MatListModule,
+    MatIcon,
+],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
 export class MainMenuComponent {
-items: MenuItem[] | undefined;
+items: any | undefined;
 
 ngOnInit() {
     this.items = [
         {
           label: 'Home',
-          icon: 'pi pi-home',
+          icon: 'home',
           routerLink: ['/'],
           routerLinkActiveOptions: { exact: true }
         },
         {
           label: 'Todo',
-          icon: 'pi pi-star',
+          icon: 'star',
           routerLink: ['/todo'],
           routerLinkActiveOptions: { exact: true }
         },
         {
           label: 'Counter',
-          icon: 'pi pi-stopwatch',
+          icon: 'timer',
           routerLinkActiveOptions: { exact: true }
         }
     ]

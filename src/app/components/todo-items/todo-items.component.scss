@@ -1,27 +1,26 @@
-.flex {
-    display: flex;
-}
-.flex-col  {
-    flex-direction: column;
-}
-.gap-1 {
-    gap: 0.5em;
-}
-
-ul {
-    padding: 0;
-    list-style: none;
-}
-
-li {
-    &:not(:first-child) {
-        border-top: 1px solid rgba(black, 0.3);
-        padding-top: 0.5em;
+.mat-mdc-nav-list {
+    .mat-mdc-list-item {
+        border-radius: 0;
+        --mat-list-list-item-hover-state-layer-color: transparent;
+    }
+    .mdc-list-item {
+        cursor: default;
     }
 }
+:host {
+    --mat-form-field-container-vertical-padding: 8px;
+    --mat-form-field-container-height: 40px;
+    --mat-button-filled-container-shape: 0 100vw 100vw 0;
+}
 
-todo-item {
+.form-control {
     display: flex;
-    align-items: center;
-    gap: 0.5em;
+
+    .mat-mdc-form-field {
+        width: 100%;
+    }
+
+    .mdc-button {
+        flex-shrink: 0;
+    }
 }
