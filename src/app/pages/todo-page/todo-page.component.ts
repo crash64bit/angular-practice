@@ -3,7 +3,7 @@ import { TodoItemsComponent } from '../../components/todo-items/todo-items.compo
 
 
 @Component({
-  selector: 'todo-page',
+  selector: 'app-todo-page',
   imports: [
     TodoItemsComponent,
   ],

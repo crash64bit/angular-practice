@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { TodoPageComponent } from './pages/todo-page/todo-page.component';
+// import { HomePageComponent } from './pages/home-page/home-page.component';
+// import { TodoPageComponent } from './pages/todo-page/todo-page.component';
 
 export const routes: Routes = [
     {

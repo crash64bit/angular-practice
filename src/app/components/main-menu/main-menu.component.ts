@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
+import { MenuItem } from '../../models/menuItem.interface';
 
 @Component({
-  selector: 'main-menu',
+  selector: 'app-main-menu',
   imports: [
     RouterLink,
     RouterLinkActive,
@@ -14,10 +15,10 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss'
 })
-export class MainMenuComponent {
-items: any | undefined;
+export class MainMenuComponent implements OnInit {
+  items: MenuItem[] = [];
 
-ngOnInit() {
+  ngOnInit(): void {
     this.items = [
         {
           label: 'Home',

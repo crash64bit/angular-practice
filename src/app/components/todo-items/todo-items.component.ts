@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BrowserStorageService } from '../../services/storage.servive';
-import { Todo } from '../../interfaces/todo';
+import { Todo } from '../../models/todo.interface';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
@@ -11,7 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 
 
 @Component({
-  selector: 'todo-items',
+  selector: 'app-todo-items',
   imports: [
     FormsModule,
     MatCheckboxModule,
@@ -28,14 +28,18 @@ export class TodoItemsComponent {
 
   storageService = inject(BrowserStorageService);
   
-  inputValue: string = '';
+  inputValue = '';
   
   onInputChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.inputValue = value;
   }
 
-  getTodoItems() {
+  getActiveTodoItems(): Todo[] {
+    return this.getTodoItems().filter(item => item.checked )
+  }
+
+  getTodoItems(): Todo[] {
     const rawItems = this.storageService.get('todo');
     if (!rawItems || !Array.isArray( JSON.parse(rawItems) )) {
       return [];
@@ -90,7 +94,9 @@ export class TodoItemsComponent {
   updateTodoItems(items: Todo[]): void {
     this.storageService.set('todo', JSON.stringify(items));
     this.items = items;
+    this.activeItems = items.filter(item => item.checked );
   }
 
   items: Todo[] = this.getTodoItems();
+  activeItems: Todo[] = this.items.filter(item => item.checked );
 }
