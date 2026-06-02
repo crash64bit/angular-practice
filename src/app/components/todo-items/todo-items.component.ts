@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { BrowserStorageService } from '../../services/storage.servive';
+import { BrowserStorageService } from '../../services/storage.service';
 import { Todo } from '../../models/todo.interface';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -39,6 +39,7 @@ export class TodoItemsComponent {
     return this.getTodoItems().filter(item => item.checked )
   }
 
+  // Todo: JSON.parse without try/catch
   getTodoItems(): Todo[] {
     const rawItems = this.storageService.get('todo');
     if (!rawItems || !Array.isArray( JSON.parse(rawItems) )) {
