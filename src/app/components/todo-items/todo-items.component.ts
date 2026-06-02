@@ -35,52 +35,61 @@ export class TodoItemsComponent {
     this.inputValue = value;
   }
 
-  getActiveTodoItems(): Todo[] {
+  getCheckedTodoItems(): Todo[] {
     return this.getTodoItems().filter(item => item.checked )
   }
 
-  // Todo: JSON.parse without try/catch
   getTodoItems(): Todo[] {
     const rawItems = this.storageService.get('todo');
-    if (!rawItems || !Array.isArray( JSON.parse(rawItems) )) {
+
+    if (!rawItems) {
       return [];
     }
 
-    return JSON.parse(rawItems);
+    try {
+      const parsed = JSON.parse(rawItems);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
-  updateTodoItemChecked(index: number, checked: boolean): void {
+  updateTodoItemChecked(id: string, checked: boolean): void {
 
     const items = this.getTodoItems();
 
-    const item = items[index];
+    const item = items.find(item => item.id === id);
+    if (!item) return;
 
     const itemNew: Todo = {
+      id: item.id,
       checked: checked,
       value: item.value
     };
 
-    items.splice(index, 1, itemNew);
+    items.splice(items.findIndex(item => item.id === id), 1, itemNew);
 
     this.updateTodoItems(items);
   }
 
-  removeTodoItem(index: number): void {
+  removeTodoItem(id: string): void {
+
+    if (!id) return;
 
     const items = this.getTodoItems();
-    
-    items.splice(index, 1);
+    items.splice(items.findIndex(item => item.id === id), 1);
 
     this.updateTodoItems(items);
     
   }
 
   addTodoItem(): void {
-    if (this.inputValue == '') return;
+    if (this.inputValue === '') return;
 
     const items = this.getTodoItems();
 
     const item: Todo = {
+      id: crypto.randomUUID(),
       checked: false,
       value: this.inputValue
     };
@@ -95,9 +104,9 @@ export class TodoItemsComponent {
   updateTodoItems(items: Todo[]): void {
     this.storageService.set('todo', JSON.stringify(items));
     this.items = items;
-    this.activeItems = items.filter(item => item.checked );
+    this.checkedItems = items.filter(item => item.checked );
   }
 
   items: Todo[] = this.getTodoItems();
-  activeItems: Todo[] = this.items.filter(item => item.checked );
+  checkedItems: Todo[] = this.items.filter(item => item.checked );
 }

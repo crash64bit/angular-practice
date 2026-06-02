@@ -1,10 +1,11 @@
 <mat-nav-list>
-    @for (item of items; track $index) {
+    @for (item of items; track item.id) {
         <mat-list-item>
-            <mat-checkbox [checked]="item.checked" (change)="updateTodoItemChecked($index, $event.checked)"></mat-checkbox>
-            {{item.value}}
-            <button matIconButton matListItemMeta aria-label="Remove" (click)="removeTodoItem($index)">
-                <mat-icon>remove</mat-icon>
+            <mat-checkbox [checked]="item.checked" (change)="updateTodoItemChecked(item.id, $event.checked)" [aria-label]="'Complete task: ' + item.value">
+                {{item.value}}
+            </mat-checkbox>
+            <button matIconButton matListItemMeta [attr.aria-label]="'Remove ' + item.value" (click)="removeTodoItem(item.id)">
+                <mat-icon>Remove {{ item.value }}</mat-icon>
             </button>
         </mat-list-item>
         @if (!$last) {
@@ -12,6 +13,10 @@
         }
     }
 </mat-nav-list>
+
+<p>
+    {{ checkedItems.length }} checked {{ checkedItems.length === 1 ? 'item' : 'items' }}
+</p>
 
 <div class="form-control">
     <mat-form-field>
