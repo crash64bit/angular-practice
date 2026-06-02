@@ -1,7 +1,7 @@
 <mat-nav-list>
   @for (item of items; track item) {
     @if (item.routerLink) {
-        <a mat-list-item [routerLink]=item.routerLink routerLinkActive="active" [routerLinkActiveOptions]=item.routerLinkActiveOptions>
+        <a mat-list-item [routerLink]="item.routerLink" routerLinkActive="active" [routerLinkActiveOptions]="item.routerLinkActiveOptions ?? { exact: false }">
             <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
             {{ item.label }}
         </a>
