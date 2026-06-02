@@ -5,7 +5,7 @@
                 {{item.value}}
             </mat-checkbox>
             <button matIconButton matListItemMeta [attr.aria-label]="'Remove ' + item.value" (click)="removeTodoItem(item.id)">
-                <mat-icon>Remove {{ item.value }}</mat-icon>
+                <mat-icon>remove {{ item.value }}</mat-icon>
             </button>
         </mat-list-item>
         @if (!$last) {
