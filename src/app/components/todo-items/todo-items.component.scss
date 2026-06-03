@@ -14,7 +14,10 @@
 }
 
 .form-control {
-    // display: flex;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--mat-sys-surface);
+    z-index: 100;
 }
 
 .field-group {

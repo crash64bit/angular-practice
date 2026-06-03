@@ -1,3 +1,10 @@
+mat-nav-list {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--mat-sys-surface);
+}
+
 .mat-mdc-list-base {
     display: flex;
     flex-wrap: wrap;
