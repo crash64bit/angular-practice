@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BrowserStorageService } from '../../services/storage.service';
 import { Todo } from '../../models/todo.interface';
-import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
@@ -14,7 +13,6 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-todo-items',
   imports: [
-    FormsModule,
     MatCheckboxModule,
     MatListModule,
     MatButtonModule,
@@ -33,6 +31,9 @@ export class TodoItemsComponent {
   newTodoControl = new FormControl('', {
     nonNullable: true,
   });
+
+  formMode: 'add' | 'edit' = 'add';
+  editTodoItemId: string | null = null;
 
   getCheckedTodoItems(): Todo[] {
     return this.items.filter(item => item.checked )
@@ -53,7 +54,7 @@ export class TodoItemsComponent {
     }
   }
 
-  updateTodoItemChecked(id: string, checked: boolean): void {
+  updateTodoItem(id: string, checked: boolean, value: string): void {
 
     const items = this.getTodoItems();
 
@@ -63,12 +64,24 @@ export class TodoItemsComponent {
     const itemNew: Todo = {
       id: item.id,
       checked: checked,
-      value: item.value
+      value: value
     };
 
-    items.splice(items.findIndex(item => item.id === id), 1, itemNew);
+    const index = items.findIndex(item => item.id === id);
+    if (index === -1) return;
+    items.splice(index, 1, itemNew);
 
     this.updateTodoItems(items);
+  }
+
+  updateTodoItemChecked(id: string, checked: boolean): void {
+
+    const items = this.getTodoItems();
+
+    const item = items.find(item => item.id === id);
+    if (!item) return;
+
+    this.updateTodoItem(id, checked, item.value);
   }
 
   removeTodoItem(id: string): void {
@@ -76,14 +89,18 @@ export class TodoItemsComponent {
     if (!id) return;
 
     const items = this.getTodoItems();
-    items.splice(items.findIndex(item => item.id === id), 1);
+    const index = items.findIndex(item => item.id === id);
+    if (index === -1) return;
+    items.splice(index, 1);
 
     this.updateTodoItems(items);
-    
+    if (this.editTodoItemId === id) {
+      this.cancelEditTodoItem();
+    }
   }
 
   addTodoItem(): void {
-    const value = this.newTodoControl.value;
+    const value = this.newTodoControl.value.trim();
 
     if (!value) return;
 
@@ -105,6 +122,47 @@ export class TodoItemsComponent {
     this.storageService.set('todo', JSON.stringify(items));
     this.items = items;
     this.checkedItems = this.getCheckedTodoItems();
+  }
+
+
+  get isEditing(): boolean {
+    return this.editTodoItemId !== null;
+  }
+
+  editTodoItem(item: Todo): void {
+    this.editTodoItemId = item.id;
+    this.formMode = 'edit';
+    this.newTodoControl.setValue(item.value);
+  }
+
+  cancelEditTodoItem(): void {
+    this.editTodoItemId = null;
+    this.formMode = 'add';
+    this.newTodoControl.reset();
+  }
+
+  saveTodoItem(): void {
+    const value = this.newTodoControl.value.trim();
+    if (!value) return;
+
+    if (this.formMode === 'add') {
+      this.addTodoItem();
+      return;
+    }
+
+    if (!this.editTodoItemId) return;
+
+    const items = this.getTodoItems();
+    const index = items.findIndex((todo) => todo.id === this.editTodoItemId);
+
+    if (index === -1) {
+      this.cancelEditTodoItem();
+      return;
+    }
+
+    const item = items[index];
+    this.updateTodoItem(item.id, item.checked, value);
+    this.cancelEditTodoItem();
   }
 
   items: Todo[] = this.getTodoItems();

@@ -1,11 +1,23 @@
 <mat-nav-list>
     @for (item of items; track item.id) {
         <mat-list-item>
-            <mat-checkbox [checked]="item.checked" (change)="updateTodoItemChecked(item.id, $event.checked)" [aria-label]="'Complete task: ' + item.value">
+            <mat-checkbox [checked]="item.checked" [disabled]="isEditing" (change)="updateTodoItemChecked(item.id, $event.checked)">
                 {{item.value}}
             </mat-checkbox>
-            <button matIconButton matListItemMeta [attr.aria-label]="'Remove ' + item.value" (click)="removeTodoItem(item.id)">
-                <mat-icon>remove {{ item.value }}</mat-icon>
+            <button
+                matIconButton
+                matListItemMeta
+                [disabled]="isEditing"
+                [attr.aria-label]="'Edit ' + item.value" (click)="editTodoItem(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button
+                matIconButton
+                matListItemMeta
+                [disabled]="isEditing"
+                [attr.aria-label]="'Remove ' + item.value"
+                (click)="removeTodoItem(item.id)">
+                <mat-icon>remove</mat-icon>
             </button>
         </mat-list-item>
         @if (!$last) {
@@ -18,11 +30,19 @@
     {{ checkedItems.length }} checked {{ checkedItems.length === 1 ? 'item' : 'items' }}
 </p>
 
-<form class="form-control" (ngSubmit)="addTodoItem()">
+<form class="form-control" (ngSubmit)="saveTodoItem()">
     <div class="field-group">
         <mat-form-field>
-            <input matInput placeholder="Add todo item" [formControl]="newTodoControl">
+            <input
+                matInput
+                [placeholder]="formMode === 'add' ? 'Add todo item' : 'Edit todo item'"
+                [formControl]="newTodoControl">
         </mat-form-field>
-        <button matButton="filled" type="submit" [disabled]="!newTodoControl.value.trim()">Add Item</button>
+        <button matButton="filled" type="submit" [disabled]="!newTodoControl.value.trim()">
+            {{ formMode === 'add' ? 'Add Item' : 'Update Item' }}
+        </button>
+        @if (formMode === 'edit') {
+            <button matButton type="button" class="cancel-button" (click)="cancelEditTodoItem()">Cancel</button>
+        }
     </div>
 </form>
