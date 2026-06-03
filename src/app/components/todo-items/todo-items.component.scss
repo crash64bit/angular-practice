@@ -31,3 +31,24 @@
         flex-shrink: 0;
     }
 }
+
+.drag-handle {
+    cursor: grab;
+    opacity: 0.6;
+    position: relative;
+    top: 8px;
+    margin-left: -6px;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.mdc-list-item--with-trailing-meta .mdc-list-item__end:not(:last-child) {
+    margin-left: 0;
+}

@@ -1,6 +1,13 @@
-<mat-nav-list>
+<mat-nav-list
+  cdkDropList
+  [cdkDropListDisabled]="isEditing"
+  (cdkDropListDropped)="drop($event)">
     @for (item of items; track item.id) {
-        <mat-list-item>
+        <mat-list-item
+            cdkDrag
+            [cdkDragDisabled]="isEditing"
+            cdkDragLockAxis="y">
+            <mat-icon cdkDragHandle class="drag-handle" [attr.aria-label]="'Drag ' + item.value">drag_indicator</mat-icon>
             <mat-checkbox [checked]="item.checked" [disabled]="isEditing" (change)="updateTodoItemChecked(item.id, $event.checked)">
                 {{item.value}}
             </mat-checkbox>

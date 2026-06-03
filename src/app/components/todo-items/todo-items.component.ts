@@ -8,6 +8,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider'
 import { MatIcon } from '@angular/material/icon';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -19,7 +24,8 @@ import { MatIcon } from '@angular/material/icon';
     MatInputModule,
     MatDividerModule,
     MatIcon,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
 ],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss'
@@ -163,6 +169,15 @@ export class TodoItemsComponent {
     const item = items[index];
     this.updateTodoItem(item.id, item.checked, value);
     this.cancelEditTodoItem();
+  }
+
+  drop(event: CdkDragDrop<Todo[]>): void {
+    if (event.previousIndex === event.currentIndex) {
+      return;
+    }
+    const items = [...this.items];
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.updateTodoItems(items);
   }
 
   items: Todo[] = this.getTodoItems();
