@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BrowserStorageService } from '../../services/storage.service';
 import { Todo } from '../../models/todo.interface';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,8 @@ import { MatIcon } from '@angular/material/icon';
     MatButtonModule,
     MatInputModule,
     MatDividerModule,
-    MatIcon
+    MatIcon,
+    ReactiveFormsModule
 ],
   templateUrl: './todo-items.component.html',
   styleUrl: './todo-items.component.scss'
@@ -27,16 +29,13 @@ import { MatIcon } from '@angular/material/icon';
 export class TodoItemsComponent {
 
   storageService = inject(BrowserStorageService);
-  
-  inputValue = '';
-  
-  onInputChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.inputValue = value;
-  }
+
+  newTodoControl = new FormControl('', {
+    nonNullable: true,
+  });
 
   getCheckedTodoItems(): Todo[] {
-    return this.getTodoItems().filter(item => item.checked )
+    return this.items.filter(item => item.checked )
   }
 
   getTodoItems(): Todo[] {
@@ -84,29 +83,30 @@ export class TodoItemsComponent {
   }
 
   addTodoItem(): void {
-    if (this.inputValue === '') return;
+    const value = this.newTodoControl.value;
+
+    if (!value) return;
 
     const items = this.getTodoItems();
 
     const item: Todo = {
       id: crypto.randomUUID(),
       checked: false,
-      value: this.inputValue
+      value: value
     };
 
     items.push(item);
 
     this.updateTodoItems(items);
-
-    this.inputValue = '';
+    this.newTodoControl.reset();
   }
 
   updateTodoItems(items: Todo[]): void {
     this.storageService.set('todo', JSON.stringify(items));
     this.items = items;
-    this.checkedItems = items.filter(item => item.checked );
+    this.checkedItems = this.getCheckedTodoItems();
   }
 
   items: Todo[] = this.getTodoItems();
-  checkedItems: Todo[] = this.items.filter(item => item.checked );
+  checkedItems: Todo[] = this.getCheckedTodoItems();
 }

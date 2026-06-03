@@ -18,9 +18,11 @@
     {{ checkedItems.length }} checked {{ checkedItems.length === 1 ? 'item' : 'items' }}
 </p>
 
-<div class="form-control">
-    <mat-form-field>
-        <input matInput placeholder="Add todo item" (input)="onInputChange($event)" [value]="inputValue">
-    </mat-form-field>
-    <button matButton="filled" (click)="addTodoItem()">Add Item</button>
-</div>
+<form class="form-control" (ngSubmit)="addTodoItem()">
+    <div class="field-group">
+        <mat-form-field>
+            <input matInput placeholder="Add todo item" [formControl]="newTodoControl">
+        </mat-form-field>
+        <button matButton="filled" type="submit" [disabled]="!newTodoControl.value.trim()">Add Item</button>
+    </div>
+</form>
